@@ -153,13 +153,15 @@ cidades dos jogadores:
   Wars — servem de alvo de treino, fonte de loot/recursos e, possivelmente,
   território ocupável.
 - **Minas no mapa** (Ferro, Ouro, Madeira): diferente dos prédios de produção
-  internos da cidade (seção 4), estas são **nós neutros no mapa mundial** que
-  qualquer jogador pode enviar tropas para ocupar/explorar, gerando uma segunda
-  camada de produção de recursos — competitiva, finita por região. Uma mina
-  capturada por um jogador **pode ser roubada por outro jogador** via ataque —
-  PvP individual, confirmado pelo autor como uma das formas centrais de disputa
-  (distinto do evento mensal de Posses de guilda, seção 6, que é uma camada
-  maior e coletiva).
+  internos da cidade (seção 4), estas são **nós neutros no mapa mundial**
+  (nunca pertencem a ninguém por padrão). Qualquer jogador pode destacar uma
+  parte de suas tropas para **dominar** (controlar) uma mina — sem limite de
+  quantas minas um jogador pode dominar ao mesmo tempo ("era ilimitado",
+  confirmado pelo autor). O domínio não é permanente nem exclusivo: **nada
+  impede que outro jogador ataque e tome o controle** de uma mina já dominada
+  por alguém — PvP individual contínuo, confirmado pelo autor como uma das
+  formas centrais de disputa (distinto do evento mensal de Posses de guilda,
+  seção 6, que é uma camada maior e coletiva).
 - **Ruínas**: locais de PvE farmável (ver seção 8) — não pertencem a nenhum
   jogador, geram Fragmentos ao serem exploradas com tropas específicas.
 - **Cidades de outros jogadores**: alvo de ataque direto — ver seção 8 para o
@@ -296,7 +298,8 @@ em torno de atacar outros jogadores.
 Ações confirmadas, disponíveis ao atacar a cidade/território de outro jogador:
 
 - **Atacar o castelo** do jogador diretamente.
-- **Roubar uma mina** que o jogador tinha capturado no mapa (seção 5).
+- **Tomar uma mina** que o jogador estava dominando no mapa (seção 5) — as
+  minas são sempre neutras, o domínio de um jogador nunca é permanente.
 - **Matar as tropas** dele em combate.
 - **Zerar os recursos** — saque que esvazia os depósitos da cidade atacada.
 

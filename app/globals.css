@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0d0f14;
+  --foreground: #e7e8ee;
+  --ink-soft: #aab0c4;
+  --ink-faint: #6d7590;
+  --surface: #171a22;
+  --surface-2: #1f2330;
+  --line: #2b3040;
+  --accent: #d6a94e;
+  --accent-strong: #eac178;
+  --accent-tint: #2c2413;
+  --good: #6fae6f;
+  --bad: #c25b4d;
+  --fac-human: #d2aa55;
+  --fac-orc: #8aa168;
+  --fac-chaos: #9b79c4;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), serif;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono), monospace;
+}
+
+.scene-sky {
+  background:
+    radial-gradient(120% 90% at 50% 0%, #3a4358 0%, #232a3a 45%, #171a22 100%);
+}
+
+.scene-ridge {
+  clip-path: polygon(0% 100%, 0% 55%, 8% 48%, 18% 60%, 28% 42%, 40% 58%, 52% 38%, 64% 56%, 76% 44%, 88% 60%, 100% 50%, 100% 100%);
+}
+
+.scene-ridge-2 {
+  clip-path: polygon(0% 100%, 0% 70%, 12% 62%, 24% 74%, 36% 60%, 50% 72%, 62% 58%, 74% 70%, 86% 60%, 100% 68%, 100% 100%);
+}
+
+@keyframes pulse-ring {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(214, 169, 78, 0.45); }
+  50% { box-shadow: 0 0 0 6px rgba(214, 169, 78, 0); }
+}
+.hotspot-pulse {
+  animation: pulse-ring 2.4s ease-in-out infinite;
+}
