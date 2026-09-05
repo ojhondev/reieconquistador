@@ -1,4 +1,4 @@
-# Rei e Conquistador — Game Design Document (v0.2)
+# Rei e Conquistador — Game Design Document (v0.3)
 
 > Documento de reconstrução. **Rei e Conquistador** original foi um browser MMO de
 > estratégia hospedado em `br.337.com` (portal 337 Technology Limited / UOL Jogos),
@@ -18,6 +18,7 @@
 
 | Versão | Mudança |
 |---|---|
+| v0.3 | Separa nível de jogador (conta) e nível de herói — o cap de Lv 54→80 é do **jogador**, não do herói. Adiciona hierarquia de rank de herói (Conde → Visconde → Visconde Superior → Marquês → Duque → Deus, ligada à cor do equipamento) e o sistema de Cartas de Herói (aquisição por sorte, compradas no mercado ou ganhas em missão). Confirma que a mitologia grega existia de fato (heróis Deus = deuses gregos). Resolve o Sistema de Posses como evento mensal. Resolve o Mercado como sistema misto (loja do sistema + comércio entre jogadores). Remove a crítica ao "item barato por bug" — era um workaround de presente entre amigos, preservado de propósito. |
 | v0.2 | Adiciona economia entre jogadores (mercado), Mapa do Mundo (estilo Tribal Wars, castelos NPC, minas no mapa), Sistema de Posses (disputa de território entre guildas), sistema de Guildas detalhado (estilo Tribal Wars), nível máximo definido em Lv 80 (original era Lv 54). |
 | v0.1 | Primeira versão: facções, loop principal, recursos, construção, herói, exército, guildas (básico), monetização, stack técnica. |
 
@@ -60,11 +61,13 @@ unidades próprios:
 Cada facção tem uma tela de lore própria na criação de personagem (estandarte +
 texto curto de flavor) — a reconstruir com escrita original.
 
-> Nota de pesquisa: o material original também continha referências soltas à
-> mitologia grega (menção a "Zeus" em chat, "divindade do Olimpo" em uma fonte
-> secundária). Não ficou claro se isso era um sistema paralelo (ex.: bênçãos
-> divinas) ou contaminação de outro jogo do mesmo portal. Tratar como **não
-> confirmado** — decisão de design em aberto (seção 12).
+> **Confirmado pelo autor**: a mitologia grega existia de fato no jogo original —
+> não é ruído de pesquisa. Ela se manifesta especificamente através do rank
+> **Deus** de herói (deuses gregos como Atena, Poseidon, Apolo, Hermes — ver seção
+> 7.2), não como uma quarta facção. Resta confirmar se também existia, à parte
+> disso, um sistema de "jurar fidelidade a uma divindade" (mencionado em uma fonte
+> secundária) — pode ser a mesma coisa vista de fora por quem não jogou, ou um
+> sistema paralelo. Ver seção 13.
 
 ## 3. Loop principal
 
@@ -75,7 +78,7 @@ Coletar recursos (passivo, por hora, na própria cidade)
 Construir / evoluir prédios ──► Desbloquear unidades e tecnologias
         │                              │
         ▼                              ▼
-Treinar exército                 Equipar e evoluir herói (até Lv 80)
+Treinar exército                 Evoluir jogador (até Lv 80) e coletar/evoluir heróis
         │                              │
         ├──────────────┬───────────────┘
         ▼               ▼
@@ -117,11 +120,14 @@ original.
 
 Confirmado pela memória do autor como **extremamente importante** no original — a
 economia do servidor era sustentada pelos próprios jogadores, não só pela produção
-individual. Proposta de sistema:
+individual. **Era um sistema misto**, com duas camadas que coexistem:
 
-- **Mercado/Comércio**: painel dedicado onde jogadores publicam ofertas de troca
-  (ex.: "dou 5.000 Madeira, quero 3.000 Ferro") ou vendem por Ouro — um livro de
-  ofertas visível a todo o servidor (ou à região do mapa, a decidir).
+- **Loja do sistema**: o próprio jogo oferecia produtos/recursos à venda para
+  ajudar a criar e sustentar a economia do servidor — uma espécie de piso/seed de
+  oferta, evitando que a economia trave por falta total de liquidez.
+- **Mercado entre jogadores**: jogadores compravam e vendiam recursos e itens uns
+  dos outros diretamente — a camada social e mais importante, onde a maior parte
+  do valor real circulava.
 - **Caravanas**: envio físico de recursos entre cidades tem tempo de viagem e é
   **interceptável** por outro jogador no mapa (arriscar o comércio é parte do
   jogo) — coerente com o fato de o mapa ser uma entidade viva (seção 5).
@@ -129,9 +135,12 @@ individual. Proposta de sistema:
   puder ser escoado — o mercado é o que torna a especialização de cidade uma
   escolha real, em vez de todo mundo construir os mesmos 4 prédios na mesma
   proporção.
-- **Decisão em aberto**: existia leilão/mercado global automático (tipo auction
-  house) no original, ou era só troca direta jogador-a-jogador? A memória do autor
-  deve resolver isso (seção 12).
+- **Preço livre, de propósito**: o jogo não permitia presentear itens
+  diretamente entre contas — então jogadores usavam o mercado como workaround:
+  listar um item por um preço simbólico (ex. 2 de ouro) para um amigo comprar.
+  Isso é nostálgico e **deve ser preservado deliberadamente** na reconstrução —
+  não adicionar piso de preço "anti-abuso" que mataria esse comportamento
+  (ver também seção 11).
 
 ## 5. Mapa do Mundo
 
@@ -163,9 +172,11 @@ coordenadas.
 Sistema confirmado pela memória do autor como um dos pilares de PvP em guilda do
 jogo original:
 
-- Periodicamente (gatilho exato a definir — pode ser por horário fixo, por evento
-  de servidor, ou por idade do servidor), **áreas específicas do mapa "abrem"
-  para disputa** entre guildas.
+- **Evento mensal** (segundo a memória do autor — ele mesmo não tem certeza
+  absoluta da periodicidade exata): periodicamente, **áreas específicas do mapa
+  "abrem" para disputa** entre guildas. Tratar "mensal" como a hipótese de
+  trabalho até confirmação; a duração exata da janela de disputa dentro do mês
+  ainda é uma incógnita (seção 13).
 - Cada Posse concede um **bônus territorial** enquanto controlada: bônus de
   produção de Ouro, Ferro ou Madeira para a guilda inteira, ou bônus de
   progressão/atributo para heróis (ex.: +EXP, +atributo) — a decidir exatamente
@@ -181,36 +192,85 @@ jogo original:
   controla no momento (visibilidade pública no mapa e/ou em um placar de
   servidor).
 
-> Decisão em aberto: frequência exata de abertura das Posses, se existe uma janela
-> de tempo limitada de disputa (ex.: "Posse fica em disputa por 2h, depois trava
-> pro vencedor") ou se é captura livre a qualquer momento uma vez enfraquecida a
-> guarnição. Precisa da memória do autor para afinar (seção 12).
+> Decisão em aberto: dentro do mês, existe uma janela de tempo limitada de disputa
+> (ex.: "Posse fica em disputa por 2h no primeiro fim de semana do mês, depois
+> trava pro vencedor") ou é captura livre a qualquer momento uma vez enfraquecida
+> a guarnição, durante todo o mês? Precisa da memória do autor para afinar
+> (seção 13).
 
-## 7. Sistema de Herói
+## 7. Progressão: Jogador e Heróis
 
-Cada personagem tem **um herói principal** com:
+Importante distinção confirmada pelo autor: **nível de jogador (conta)** e
+**nível de herói** são duas coisas separadas. O que segue organiza as duas
+trilhas e a hierarquia de heróis.
+
+### 7.1 Nível do jogador (conta)
 
 - **Nível máximo: Lv 80** (decisão de design para esta reconstrução — o jogo
-  original ia até **Lv 54**). Ampliar o teto dá mais espaço de progressão e mais
-  faixas de conteúdo/equipamento ao longo do jogo; a tabela de EXP por nível e a
-  curva de atributos devem ser desenhadas do zero para essa nova faixa, não
-  simplesmente esticadas.
-- **Atributos**: Vida, Ataque, Defesa, Agilidade, Inteligência, Sorte — com pontos
-  de atributo alocáveis manualmente a cada level up (confirmado por gameplay).
-- **Experiência**: barra de EXP com teto por nível (ex. 0/500 nos níveis iniciais,
-  visto em gameplay), subida por quests, batalhas, Posses e itens consumíveis
-  ("Pergaminho de EXP de Herói").
+  original ia até **Lv 54**, e esse cap era do **jogador**, não do herói).
+  Ampliar o teto dá mais espaço de progressão e mais faixas de conteúdo ao longo
+  do jogo; a tabela de EXP por nível deve ser desenhada do zero para essa nova
+  faixa, não simplesmente esticada.
+- Esse nível representa a progressão geral da conta (provavelmente ligado a
+  quests, construção e conquistas), distinto da evolução de cada herói
+  individual.
+
+### 7.2 Hierarquia de rank dos heróis
+
+Os heróis têm sua própria escada de rank/título, confirmada pelo autor — e ela é
+visual, não só numérica: o rank determina a cor/material do equipamento do
+herói, funcionando como uma escada de raridade clássica de MMO (comum → lendário):
+
+| Rank | Material/cor do equipamento |
+|---|---|
+| Conde | Tudo simples, de pano |
+| Visconde | Pano e couro |
+| Visconde Superior | Armas e armaduras esverdeadas |
+| Marquês | Armas e armaduras em tons azuis |
+| Duque | Armas e armaduras roxas |
+| **Deus** | Armas e armaduras douradas — **raríssimo** |
+
+O rank **Deus** é a confirmação de que a mitologia grega existia de fato no jogo
+original (seção 2): heróis desse rank eram literalmente deuses gregos (ex.:
+Atena, Poseidon, Apolo, Hermes — o autor não lembra quantos ao todo). São os
+heróis mais raros do jogo.
+
+### 7.3 Aquisição de heróis — Cartas de Herói
+
+Todo herói (de qualquer rank, incluindo Deus) é obtido por sorte através de
+**Cartas de Herói**, que podem ser:
+
+- **compradas no mercado** (entre jogadores ou na loja do sistema — seção 4.1), ou
+- **ganhas como recompensa de missão**.
+
+Isso torna a coleção de heróis um sistema de sorte/colecionismo (estilo
+"gacha") paralelo à progressão de conta — quanto mais alto o rank em jogo (ou
+mais rara a carta), menor a chance de tirá-lo. Jogadores podem acumular mais de
+um herói.
+
+### 7.4 Evolução e equipamento do herói
+
+- Cada herói tem **status próprios e vai melhorando com o tempo** (confirmado
+  pelo autor) — nível/experiência e atributos individuais por herói, além do
+  rank fixo de raridade da seção 7.2.
+- **Atributos**: Vida, Ataque, Defesa, Agilidade, Inteligência, Sorte — com
+  pontos alocáveis manualmente a cada level up (confirmado por gameplay).
+- **Experiência**: barra de EXP com teto por nível (ex. 0/500 nos níveis
+  iniciais, visto em gameplay), subida por quests, batalhas, Posses e itens
+  consumíveis ("Pergaminho de EXP de Herói").
 - **Lealdade**: stat secundário visto na UI original — proposta: afeta
   eficácia de comando de tropas ou custo de manutenção (a definir).
 - **Equipamento**: 7 slots — **Joia, Arma, Luva, Capa, Chapéu, Armadura, Calça**.
-  Itens forjáveis na cidade (prédio Forja), obtidos via quest/loot, **ou
-  comprados no mercado entre jogadores** (seção 4.1).
-- **Título**: título textual que evolui com progressão (ex. "Visconde Superior"
-  visto em gameplay) — sistema de rank narrativo independente do nível numérico.
+  Itens forjáveis na cidade (prédio Forja), obtidos via quest/loot, ou
+  comprados no mercado entre jogadores (seção 4.1).
 
-Herói participa de: **Batalha** (ataque/defesa de território, incluindo
-guarnição de Posses) e tem um botão dedicado de **Defender** — o herói pode ser
-destacado para reforçar uma cidade ou uma Posse sem sair em campanha ofensiva.
+Heróis participam de: **Batalha** (ataque/defesa de território, incluindo
+guarnição de Posses) e têm um botão dedicado de **Defender** — podem ser
+destacados para reforçar uma cidade ou uma Posse sem sair em campanha ofensiva.
+
+> Decisão em aberto: um herói pode subir de rank (Conde → Deus) por jogo, ou o
+> rank é fixo desde a Carta de Herói que o originou, e só se troca de herói para
+> ter um rank melhor? Precisa da memória do autor (seção 13).
 
 ## 8. Exército e Combate
 
@@ -262,16 +322,25 @@ autor:
 
 ## 11. Economia e monetização (revisão deliberada)
 
-O jogo original teve dois problemas relatados pela comunidade que este redesign
-evita deliberadamente:
-1. **Itens de poder vendidos baratos por bug/GM inativo** → minar a confiança dos
-   jogadores de longo prazo. → *Todo item com efeito em stats deve ser obtenível
-   por jogo (incluindo via mercado entre jogadores, seção 4.1), nunca exclusivo de
-   compra com dinheiro real; compras aceleram, não substituem.*
-2. **Login-reward shop pago em moeda do jogo com escala agressiva** (visto em
-   gameplay: recompensa por tempo logado, custando de 2.000 a 15.000 de moeda) →
-   manter o conceito de recompensa por tempo logado, mas sem fricção de compra —
-   é engajamento, não cash shop.
+- **Preço livre no mercado entre jogadores é uma feature, não um bug.** O jogo
+  original não permitia presentear itens diretamente entre contas, e jogadores
+  contornavam isso listando um item por um preço simbólico (ex. 2 de ouro) para
+  um amigo comprar. O autor pediu explicitamente para **preservar** esse
+  comportamento — é nostálgico e faz parte da identidade social do jogo. A
+  reconstrução não deve impor piso de preço "anti-abuso" no mercado; se o
+  design decidir permitir presente direto no futuro, deve ser uma adição, não
+  uma substituição dessa válvula social já validada pelos jogadores.
+- **Login-reward shop pago em moeda do jogo com escala agressiva** (visto em
+  gameplay: recompensa por tempo logado, custando de 2.000 a 15.000 de moeda) —
+  confirmado como um ponto real de fricção do original (o autor concorda). →
+  manter o conceito de recompensa por tempo logado, mas sem fricção de compra —
+  é engajamento, não cash shop.
+- **Cartas de Herói** (seção 7.3) compradas com dinheiro real são o principal
+  risco de pay-to-win desta reconstrução, já que determinam acesso a heróis de
+  rank raro (Deus). Proposta: Cartas de Herói compráveis com dinheiro real
+  concedem apenas as mesmas chances/ranks disponíveis via mercado ou missão —
+  nunca uma carta exclusiva de dinheiro real com chance maior ou rank
+  garantido.
 
 Monetização proposta para a reconstrução (dinheiro real): cosméticos de
 herói/cidade, slots de fila de construção extras, conveniências de UI. Nunca
@@ -298,18 +367,27 @@ do padrão CRUD dos outros projetos do autor. Proposta inicial, a validar:
 
 ## 13. Decisões em aberto (precisam de input do autor)
 
-- [ ] Sistema de mitologia grega/bênçãos divinas existia de fato ou é ruído de
-      pesquisa? Incluir ou descartar.
-- [ ] Nomes e stats exatos das unidades por facção (original não documentado em
-      detalhe suficiente — precisa de design original).
-- [ ] Mercado: era troca direta jogador-a-jogador, leilão automático, ou os dois?
-- [ ] Posses: gatilho exato de abertura (horário fixo? evento de servidor?) e se
-      existe janela de tempo limitada de disputa.
-- [ ] Escopo de PvE além de castelos de NPC (masmorras, chefes) vs. o jogo
-      original.
-- [ ] Nome final do projeto (repositório usa "Rei e Conquistador" apenas como
-      referência de pesquisa — decidir marca própria antes de lançar publicamente,
-      para evitar qualquer ambiguidade de marca com o jogo original/UOL).
+- [ ] Além do rank Deus (heróis = deuses gregos, seção 7.2), existia também um
+      sistema separado de "jurar fidelidade a uma divindade do Olimpo" (fonte
+      secundária de pesquisa), ou é a mesma coisa descrita por quem não jogou?
+- [ ] Um herói pode subir de rank (Conde → Deus) jogando, ou o rank vem fixo da
+      Carta de Herói e só se troca de herói para melhorar? (seção 7.4)
+- [ ] Quantos e quais deuses gregos existiam como heróis Deus, além de Atena,
+      Poseidon, Apolo e Hermes?
+- [ ] Nomes e stats de unidades por facção: **não é mais reconstrução** — o autor
+      não lembra os originais, então serão **criados do zero** como design
+      próprio (não precisa de mais pesquisa aqui).
+- [ ] Posses: confirmado como evento mensal (seção 6) — falta definir a duração
+      exata da janela de disputa dentro do mês e o critério de desempate.
+- [ ] PvE: dúvida ainda não resolvida com o autor — a pergunta é se, **além** de
+      atacar castelos de NPC no mapa (seção 5) e cumprir quests de progressão, o
+      jogo original tinha conteúdo PvE dedicado e instanciado (ex.: uma masmorra
+      explorável sozinho ou em grupo, com chefes) — ou se castelos de NPC e
+      quests já eram "todo o PvE" que existia.
+- [ ] Nome final do projeto — confirmado que será substituído por um nome
+      próprio mais adiante (repositório usa "Rei e Conquistador" apenas como
+      referência de pesquisa, para evitar ambiguidade de marca com o jogo
+      original/UOL).
 
 ## 14. Próximos passos
 
