@@ -1,4 +1,4 @@
-# Rei e Conquistador — Game Design Document (v0.3)
+# Rei e Conquistador — Game Design Document (v0.4)
 
 > Documento de reconstrução. **Rei e Conquistador** original foi um browser MMO de
 > estratégia hospedado em `br.337.com` (portal 337 Technology Limited / UOL Jogos),
@@ -18,6 +18,7 @@
 
 | Versão | Mudança |
 |---|---|
+| v0.4 | Resolve: não existia sistema de "jurar fidelidade" a divindade; rank de herói é **fixo para sempre** (não sobe); PvE era só missões, o **PvP era o forte** (atacar castelo, roubar mina capturada, matar tropas, zerar recursos). Adiciona unidade "Rato" para farmar Ruínas em busca de Fragmentos vendáveis no mercado (renda constante). Propõe (nova regra, não memória) heróis Deus como potencialmente **únicos por servidor** (ex.: só 1 Zeus por vez). |
 | v0.3 | Separa nível de jogador (conta) e nível de herói — o cap de Lv 54→80 é do **jogador**, não do herói. Adiciona hierarquia de rank de herói (Conde → Visconde → Visconde Superior → Marquês → Duque → Deus, ligada à cor do equipamento) e o sistema de Cartas de Herói (aquisição por sorte, compradas no mercado ou ganhas em missão). Confirma que a mitologia grega existia de fato (heróis Deus = deuses gregos). Resolve o Sistema de Posses como evento mensal. Resolve o Mercado como sistema misto (loja do sistema + comércio entre jogadores). Remove a crítica ao "item barato por bug" — era um workaround de presente entre amigos, preservado de propósito. |
 | v0.2 | Adiciona economia entre jogadores (mercado), Mapa do Mundo (estilo Tribal Wars, castelos NPC, minas no mapa), Sistema de Posses (disputa de território entre guildas), sistema de Guildas detalhado (estilo Tribal Wars), nível máximo definido em Lv 80 (original era Lv 54). |
 | v0.1 | Primeira versão: facções, loop principal, recursos, construção, herói, exército, guildas (básico), monetização, stack técnica. |
@@ -64,10 +65,9 @@ texto curto de flavor) — a reconstruir com escrita original.
 > **Confirmado pelo autor**: a mitologia grega existia de fato no jogo original —
 > não é ruído de pesquisa. Ela se manifesta especificamente através do rank
 > **Deus** de herói (deuses gregos como Atena, Poseidon, Apolo, Hermes — ver seção
-> 7.2), não como uma quarta facção. Resta confirmar se também existia, à parte
-> disso, um sistema de "jurar fidelidade a uma divindade" (mencionado em uma fonte
-> secundária) — pode ser a mesma coisa vista de fora por quem não jogou, ou um
-> sistema paralelo. Ver seção 13.
+> 7.2), não como uma quarta facção. **Confirmado: não existia** nenhum sistema de
+> "jurar fidelidade a uma divindade" — a menção em fonte secundária era só uma
+> leitura equivocada de quem não jogou.
 
 ## 3. Loop principal
 
@@ -155,11 +155,15 @@ cidades dos jogadores:
 - **Minas no mapa** (Ferro, Ouro, Madeira): diferente dos prédios de produção
   internos da cidade (seção 4), estas são **nós neutros no mapa mundial** que
   qualquer jogador pode enviar tropas para ocupar/explorar, gerando uma segunda
-  camada de produção de recursos — competitiva, finita por região, e uma das
-  principais razões para expandir território.
-- **Cidades de outros jogadores**: alvo de ataque/espionagem, com todas as
-  consequências de PvP direto (saque, dano a prédios, captura de recursos em
-  trânsito).
+  camada de produção de recursos — competitiva, finita por região. Uma mina
+  capturada por um jogador **pode ser roubada por outro jogador** via ataque —
+  PvP individual, confirmado pelo autor como uma das formas centrais de disputa
+  (distinto do evento mensal de Posses de guilda, seção 6, que é uma camada
+  maior e coletiva).
+- **Ruínas**: locais de PvE farmável (ver seção 8) — não pertencem a nenhum
+  jogador, geram Fragmentos ao serem exploradas com tropas específicas.
+- **Cidades de outros jogadores**: alvo de ataque direto — ver seção 8 para o
+  detalhamento das ações de PvP disponíveis contra outro jogador.
 - **Territórios de guilda ("Posses")**: ver seção 6 — uma camada separada e mais
   estratégica de controle de área.
 
@@ -235,6 +239,19 @@ original (seção 2): heróis desse rank eram literalmente deuses gregos (ex.:
 Atena, Poseidon, Apolo, Hermes — o autor não lembra quantos ao todo). São os
 heróis mais raros do jogo.
 
+**Rank é definitivo**: confirmado pelo autor — um herói **nunca muda de rank**.
+Nasce Conde, morre Conde (ou nasce Deus, sorte rara). Não existe "promoção" de
+herói; a única forma de ter um herói de rank melhor é tirar outro via Carta de
+Herói (seção 7.3).
+
+> Proposta nova (não é memória do original — decisão de design para a
+> reconstrução): alguns heróis Deus podem ser configurados como **únicos por
+> servidor** — ex., só pode existir 1 Zeus por vez no mundo inteiro. Se o dono
+> perder/vender/trocar o herói, o "slot" se libera para outra Carta de Herói
+> render aquele deus de novo. O autor foi o GM do servidor original e detinha o
+> único Zeus — a regra formaliza essa memória como mecânica opcional, a decidir
+> quais deuses (todos? só os mais fortes?) recebem esse tratamento (seção 13).
+
 ### 7.3 Aquisição de heróis — Cartas de Herói
 
 Todo herói (de qualquer rank, incluindo Deus) é obtido por sorte através de
@@ -268,21 +285,50 @@ Heróis participam de: **Batalha** (ataque/defesa de território, incluindo
 guarnição de Posses) e têm um botão dedicado de **Defender** — podem ser
 destacados para reforçar uma cidade ou uma Posse sem sair em campanha ofensiva.
 
-> Decisão em aberto: um herói pode subir de rank (Conde → Deus) por jogo, ou o
-> rank é fixo desde a Carta de Herói que o originou, e só se troca de herói para
-> ter um rank melhor? Precisa da memória do autor (seção 13).
-
 ## 8. Exército e Combate
+
+Confirmado pelo autor: o PvE original era limitado (missões/quests), **o PvP
+era o forte do jogo** — a maior parte do conteúdo de médio/longo prazo girava
+em torno de atacar outros jogadores.
+
+### 8.1 PvP contra outro jogador
+
+Ações confirmadas, disponíveis ao atacar a cidade/território de outro jogador:
+
+- **Atacar o castelo** do jogador diretamente.
+- **Roubar uma mina** que o jogador tinha capturado no mapa (seção 5).
+- **Matar as tropas** dele em combate.
+- **Zerar os recursos** — saque que esvazia os depósitos da cidade atacada.
+
+Essas ações são compostas — um ataque bem-sucedido pode causar vários desses
+efeitos ao mesmo tempo, e cada um pede uma resposta de defesa diferente (tropas
+de guarnição, muralhas, recuperar a mina depois).
+
+### 8.2 PvE — Ruínas, "Ratos" e Fragmentos
+
+O PvE de progressão constante era estruturado como uma quest secundária
+recorrente, não um sistema à parte:
+
+- **Ratos**: um tipo de tropa treinável (menu Exército) cujo único propósito é
+  ser enviado para **farmar Ruínas** (seção 5) — não lutam contra jogadores.
+- **Ruínas**: locais neutros no mapa que, ao serem farmados com Ratos, rendem
+  **Fragmentos**.
+- **Fragmentos**: vendáveis no mercado entre jogadores (seção 4.1) — fonte de
+  **renda constante de ouro**, funcionando como uma quest diária/secundária
+  passiva em vez de uma masmorra tradicional.
+
+### 8.3 Exército geral
 
 - Tropas específicas por facção (a projetar em balanceamento — original tinha
   diferenciação visual e "estilo de combate" por facção, não detalhado em stats).
-- Treino de tropas consome recursos + tempo, enfileirado no menu **Exército**.
-- **Defesa**: menu dedicado separado de Exército — sugere tropas/estruturas
-  puramente defensivas distintas das ofensivas (torres, muralhas, guarnição).
-- Alvos de combate agora são explicitamente em camadas: **cidade de jogador**
-  (saque de recursos), **castelo de NPC** (loot/treino), **mina no mapa**
-  (disputa de produção) e **Posse de guilda** (disputa de bônus territorial,
-  seção 6) — cada um com regras de recompensa/risco próprias a balancear.
+- Treino de tropas (incluindo Ratos) consome recursos + tempo, enfileirado no
+  menu **Exército**.
+- **Defesa**: menu dedicado separado de Exército — tropas/estruturas puramente
+  defensivas distintas das ofensivas (torres, muralhas, guarnição).
+- Alvos de combate em camadas: **cidade de jogador** (seção 8.1), **castelo de
+  NPC** (loot/treino), **mina no mapa** (disputa de produção) e **Posse de
+  guilda** (disputa de bônus territorial, seção 6) — cada um com regras de
+  recompensa/risco próprias a balancear.
 - Relatórios de batalha via sistema de mensagens (`[Relatório] Mestre: ...` no
   chat/log, no jogo original usado também para completude de quest/construção —
   reconstruir como um **log de eventos unificado**, não só combate).
@@ -367,23 +413,17 @@ do padrão CRUD dos outros projetos do autor. Proposta inicial, a validar:
 
 ## 13. Decisões em aberto (precisam de input do autor)
 
-- [ ] Além do rank Deus (heróis = deuses gregos, seção 7.2), existia também um
-      sistema separado de "jurar fidelidade a uma divindade do Olimpo" (fonte
-      secundária de pesquisa), ou é a mesma coisa descrita por quem não jogou?
-- [ ] Um herói pode subir de rank (Conde → Deus) jogando, ou o rank vem fixo da
-      Carta de Herói e só se troca de herói para melhorar? (seção 7.4)
 - [ ] Quantos e quais deuses gregos existiam como heróis Deus, além de Atena,
-      Poseidon, Apolo e Hermes?
-- [ ] Nomes e stats de unidades por facção: **não é mais reconstrução** — o autor
-      não lembra os originais, então serão **criados do zero** como design
-      próprio (não precisa de mais pesquisa aqui).
+      Poseidon, Apolo e Hermes? (autor não lembra a lista completa)
+- [ ] Regra nova de "herói único por servidor" (seção 7.2): aplica a **todos**
+      os deuses ou só a alguns (ex.: só Zeus)? O que acontece com o "slot" se o
+      dono ficar inativo por muito tempo sem perder o herói formalmente?
+- [ ] Nomes e stats de unidades por facção: **não é reconstrução** — o autor não
+      lembra os originais, serão **criados do zero** como design próprio.
 - [ ] Posses: confirmado como evento mensal (seção 6) — falta definir a duração
       exata da janela de disputa dentro do mês e o critério de desempate.
-- [ ] PvE: dúvida ainda não resolvida com o autor — a pergunta é se, **além** de
-      atacar castelos de NPC no mapa (seção 5) e cumprir quests de progressão, o
-      jogo original tinha conteúdo PvE dedicado e instanciado (ex.: uma masmorra
-      explorável sozinho ou em grupo, com chefes) — ou se castelos de NPC e
-      quests já eram "todo o PvE" que existia.
+- [ ] Fragmentos (seção 8.2): além de vender no mercado por ouro, tinham algum
+      outro uso (ex.: crafting de equipamento ou de Cartas de Herói)?
 - [ ] Nome final do projeto — confirmado que será substituído por um nome
       próprio mais adiante (repositório usa "Rei e Conquistador" apenas como
       referência de pesquisa, para evitar ambiguidade de marca com o jogo
